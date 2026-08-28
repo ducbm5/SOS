@@ -252,7 +252,7 @@ export default function App() {
               </div>
               <div className="min-w-0 flex-1 leading-tight font-mono-tech">
                 <div className="text-[9px] uppercase tracking-wider text-[#F4F1EA]/60 truncate">
-                  GIẢI: <span className="font-bold text-[#F4F1EA]">{selectedRace}</span>
+                  GIẢI: <span className="font-bold text-[#F4F1EA]">{selectedRace === 'ALL' ? 'TOÀN BỘ DỮ LIỆU' : selectedRace}</span>
                 </div>
                 <div className="text-[11px] font-bold text-[#F4F1EA] truncate flex items-center gap-1">
                   <span>
@@ -306,7 +306,7 @@ export default function App() {
           searchQuery.trim() === '' ? (
             <div className="border border-[#1A1A1A]/30 bg-[#1A1A1A]/5 p-3.5 text-center my-2 space-y-2">
               <div className="text-[10px] font-mono-tech uppercase font-bold text-emerald-700 bg-emerald-100 border border-emerald-300 py-1 px-2 inline-block">
-                ✓ ĐÃ CHỌN GIẢI: {selectedRace}
+                {selectedRace === 'ALL' ? '✓ ĐÃ CHỌN: TÌM TOÀN BỘ DỮ LIỆU' : `✓ ĐÃ CHỌN GIẢI: ${selectedRace}`}
               </div>
               <h3 className="font-editorial text-base font-bold text-[#1A1A1A] uppercase">
                 SẴN SÀNG TRA CỨU
@@ -340,7 +340,7 @@ export default function App() {
           filteredResults.length > 0 ? (
             <div className="space-y-2">
               <div className="flex items-center justify-between font-mono-tech text-[9px] uppercase font-bold text-[#1A1A1A]/70 pb-0.5 border-b border-[#1A1A1A]/20">
-                <span>GIẢI: {selectedRace}</span>
+                <span>{selectedRace === 'ALL' ? 'TOÀN BỘ DỮ LIỆU' : `GIẢI: ${selectedRace}`}</span>
                 <span>{filteredResults.length} VĐV KHỚP</span>
               </div>
 
@@ -362,12 +362,12 @@ export default function App() {
                 KHÔNG TÌM THẤY VẬN ĐỘNG VIÊN
               </h2>
               <p className="font-mono-tech text-[11px] text-[#1A1A1A]/70">
-                Không tìm thấy VĐV với {searchMode === 'SO_BIB' ? 'số BIB' : searchMode === 'HO_TEN' ? 'họ tên' : searchMode === 'CCCD' ? 'CCCD' : 'SĐT'}: <strong>"{searchQuery}"</strong> trong giải <strong>"{selectedRace}"</strong>.
+                Không tìm thấy VĐV với {searchMode === 'SO_BIB' ? 'số BIB' : searchMode === 'HO_TEN' ? 'họ tên' : searchMode === 'CCCD' ? 'CCCD' : 'SĐT'}: <strong>"{searchQuery}"</strong> trong {selectedRace === 'ALL' ? 'toàn bộ dữ liệu' : `giải "${selectedRace}"`}.
               </p>
               <div className="bg-[#1A1A1A]/5 border border-[#1A1A1A]/20 p-2 text-[10px] font-mono-tech text-left space-y-0.5 text-[#1A1A1A]/80">
                 <div className="font-bold text-[#1A1A1A] uppercase">LƯU Ý TRA CỨU:</div>
                 <div>• <strong>Chế độ hiện tại:</strong> {searchMode === 'SO_BIB' ? 'BIB (Yêu cầu 5 số, khớp 100%)' : searchMode === 'HO_TEN' ? 'Họ tên' : searchMode === 'CCCD' ? 'CCCD / CMND / Hộ chiếu' : 'Số điện thoại'}</div>
-                <div>• <strong>Giải thi đấu:</strong> Đang tra trong giải <em>{selectedRace}</em></div>
+                <div>• <strong>Phạm vi tra cứu:</strong> {selectedRace === 'ALL' ? 'Đang tra trong TOÀN BỘ DỮ LIỆU' : `Đang tra trong giải ${selectedRace}`}</div>
                 <div>• Nếu muốn tìm theo thông tin khác, hãy bấm chọn các nút <strong>BIB</strong>, <strong>HỌ TÊN</strong>, <strong>CCCD</strong> hoặc <strong>SĐT</strong> ở Bước 2.</div>
               </div>
 

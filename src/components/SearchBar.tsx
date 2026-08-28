@@ -142,6 +142,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                 {race.name}
               </option>
             ))}
+            <option value="ALL" className="bg-[#1A1A1A] text-amber-300 font-bold">
+              ★ TÌM TOÀN BỘ DỮ LIỆU
+            </option>
           </select>
           <ChevronDown className="w-4 h-4 text-[#F4F1EA] absolute right-3 top-3 pointer-events-none opacity-80" />
         </div>

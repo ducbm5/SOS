@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Header } from './components/Header';
 import { SearchBar } from './components/SearchBar';
 import { RunnerCard } from './components/RunnerCard';
+import { PasswordGate } from './components/PasswordGate';
 import { Runner, SyncStatus, SearchFieldType } from './types';
 import {
   TSV_DATA_URLS,
@@ -15,6 +16,12 @@ import {
 import { AlertCircle, SearchX, Trophy, ArrowRight, ShieldCheck, Hash, User, CreditCard, Phone, ArrowUp, ChevronUp } from 'lucide-react';
 
 export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    const sessionToken = sessionStorage.getItem('med_auth_token');
+    const localToken = localStorage.getItem('med_auth_token');
+    return sessionToken === 'authenticated_898989' || localToken === 'authenticated_898989';
+  });
+
   const [runners, setRunners] = useState<Runner[]>(SAMPLE_RUNNERS);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedRace, setSelectedRace] = useState<string>(''); // No default "ALL"
@@ -191,6 +198,10 @@ export default function App() {
     setSelectedRace(raceName);
   };
 
+  if (!isAuthenticated) {
+    return <PasswordGate onAuthenticated={() => setIsAuthenticated(true)} />;
+  }
+
   return (
     <div className="min-h-screen bg-[#EAE6DD] flex justify-center selection:bg-[#1A1A1A] selection:text-[#F4F1EA]">
       {/* Mobile-Only Layout Frame */}
@@ -290,48 +301,8 @@ export default function App() {
                 />
               </div>
             </div>
-          ) : /* Case 1: Has not selected a race yet (Step 1) */
-          !selectedRace ? (
-            <div className="border-2 border-[#1A1A1A] bg-[#F4F1EA] p-4 text-center my-2 space-y-3">
-              <div className="w-10 h-10 border-2 border-[#1A1A1A] bg-[#8B0000] text-[#F4F1EA] flex items-center justify-center mx-auto shadow-sm">
-                <Trophy className="w-5 h-5" />
-              </div>
-              <div>
-                <span className="text-[10px] font-mono-tech uppercase font-bold text-[#8B0000] tracking-widest block">
-                  BƯỚC 1 / 2
-                </span>
-                <h2 className="font-editorial text-lg font-bold text-[#1A1A1A] uppercase">
-                  VUI LÒNG CHỌN GIẢI THI ĐẤU
-                </h2>
-              </div>
-              <p className="font-mono-tech text-xs text-[#1A1A1A]/70 leading-relaxed">
-                Để đảm bảo tính chính xác tuyệt đối khi tra cứu số BIB y tế, vui lòng chọn giải thi đấu bạn đang phụ trách:
-              </p>
-
-              {/* Quick Select Buttons */}
-              <div className="pt-2 space-y-2">
-                {availableRaces.map((race) => (
-                  <button
-                    key={race.name}
-                    disabled={isDataLoading}
-                    onClick={() => handleSelectRace(race.name)}
-                    className="w-full py-2.5 px-3 bg-[#1A1A1A] text-[#F4F1EA] font-mono-tech text-xs uppercase font-bold tracking-wider hover:bg-[#333333] active:scale-[0.99] transition-transform flex items-center justify-between shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <span>{race.name}</span>
-                    <span className="flex items-center gap-1 text-[#F4F1EA]/70 text-[10px]">
-                      <span>CHỌN</span>
-                      <ArrowRight className="w-3 h-3 text-[#F4F1EA]" />
-                    </span>
-                  </button>
-                ))}
-              </div>
-
-              <div className="pt-2 text-[10px] font-mono-tech text-[#1A1A1A]/60 flex items-center justify-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#8B0000]" />
-                <span>Tra cứu số BIB chính xác theo từng giải đấu</span>
-              </div>
-            </div>
-          ) : /* Case 2: Race selected, but no search query yet (Ready state) */
+          ) : /* Case 1: Has not selected a race yet (Step 1 handled at top) */
+          !selectedRace ? null : /* Case 2: Race selected, but no search query yet (Ready state) */
           searchQuery.trim() === '' ? (
             <div className="border border-[#1A1A1A]/30 bg-[#1A1A1A]/5 p-3.5 text-center my-2 space-y-2">
               <div className="text-[10px] font-mono-tech uppercase font-bold text-emerald-700 bg-emerald-100 border border-emerald-300 py-1 px-2 inline-block">

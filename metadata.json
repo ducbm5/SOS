@@ -1,0 +1,6 @@
+{
+  "name": "Tra Cứu Y Tế",
+  "description": "Hệ thống tra cứu thông tin vận động viên phục vụ y tế khẩn cấp theo Số BIB, Họ tên, CCCD và Số điện thoại.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

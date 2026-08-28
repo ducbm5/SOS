@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-paper: #F4F1EA;
+    --text-ink: #1A1A1A;
+  }
+
+  body {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    background-color: #F4F1EA;
+    color: #1A1A1A;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  h1, h2, h3, .font-editorial {
+    font-family: 'Merriweather', Georgia, Cambria, "Times New Roman", Times, serif;
+  }
+
+  .font-mono-tech {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+}
+
+/* Custom hairline borders and zero radius */
+.border-hairline {
+  border-width: 1px;
+  border-color: #1A1A1A;
+}
+
+.border-subtle {
+  border-width: 1px;
+  border-color: rgba(26, 26, 26, 0.18);
+}
+
+/* Hide scrollbar for clean mobile data tables */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

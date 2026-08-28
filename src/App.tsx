@@ -12,7 +12,7 @@ import {
   SAMPLE_RUNNERS,
   clearContactIndex,
 } from './utils/dataService';
-import { AlertCircle, SearchX, Trophy, ArrowRight, ShieldCheck, Hash, User, CreditCard, Phone } from 'lucide-react';
+import { AlertCircle, SearchX, Trophy, ArrowRight, ShieldCheck, Hash, User, CreditCard, Phone, ArrowUp, ChevronUp } from 'lucide-react';
 
 export default function App() {
   const [runners, setRunners] = useState<Runner[]>(SAMPLE_RUNNERS);
@@ -21,6 +21,33 @@ export default function App() {
   const [searchMode, setSearchMode] = useState<SearchFieldType>('SO_BIB'); // Mặc định chỉ tìm theo BIB
   const [loadPercent, setLoadPercent] = useState<number>(0);
   const [isDataLoading, setIsDataLoading] = useState<boolean>(true);
+  const [showPinnedBar, setShowPinnedBar] = useState<boolean>(false);
+
+  // Monitor scroll position to show pinned mini search status bar
+  useEffect(() => {
+    const handleScroll = () => {
+      // If user scrolls past 240px and a race is selected, show pinned bar
+      if (window.scrollY > 220) {
+        setShowPinnedBar(true);
+      } else {
+        setShowPinnedBar(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTopAndSearch = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const input = document.getElementById('main-search-input') as HTMLInputElement | null;
+    if (input) {
+      setTimeout(() => {
+        input.focus();
+        input.select();
+      }, 300);
+    }
+  };
 
   const [syncStatus, setSyncStatus] = useState<SyncStatus>({
     lastSyncedAt: null,
@@ -200,6 +227,42 @@ export default function App() {
           isLoading={isDataLoading}
           loadPercent={loadPercent}
         />
+
+        {/* Pinned Mini Status Bar (Shows only when scrolled past search, click to scroll top) */}
+        {showPinnedBar && selectedRace && (
+          <div
+            id="pinned-search-indicator"
+            onClick={scrollToTopAndSearch}
+            className="sticky top-0 z-30 bg-[#1A1A1A] text-[#F4F1EA] px-3.5 py-2.5 border-b border-[#F4F1EA]/20 shadow-lg cursor-pointer flex items-center justify-between gap-2 select-none hover:bg-[#252525] transition-colors"
+          >
+            <div className="flex items-center gap-2 min-w-0 flex-1">
+              <div className="w-6 h-6 rounded-full bg-[#8B0000] text-[#F4F1EA] flex items-center justify-center shrink-0 text-[10px] font-bold font-mono-tech">
+                <Trophy className="w-3 h-3" />
+              </div>
+              <div className="min-w-0 flex-1 leading-tight font-mono-tech">
+                <div className="text-[9px] uppercase tracking-wider text-[#F4F1EA]/60 truncate">
+                  GIẢI: <span className="font-bold text-[#F4F1EA]">{selectedRace}</span>
+                </div>
+                <div className="text-[11px] font-bold text-[#F4F1EA] truncate flex items-center gap-1">
+                  <span>
+                    {searchMode === 'SO_BIB' && 'BIB: '}
+                    {searchMode === 'HO_TEN' && 'HỌ TÊN: '}
+                    {searchMode === 'CCCD' && 'CCCD: '}
+                    {searchMode === 'SDT' && 'SĐT: '}
+                  </span>
+                  <span className="text-amber-300 font-mono-tech underline underline-offset-2">
+                    {searchQuery.trim() ? searchQuery : '(Chưa nhập)'}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-1 bg-[#F4F1EA] text-[#1A1A1A] px-2 py-1 text-[9.5px] font-mono-tech font-bold uppercase tracking-wider shrink-0 shadow-xs">
+              <span>ĐỔI / TÌM LẠI</span>
+              <ChevronUp className="w-3.5 h-3.5" />
+            </div>
+          </div>
+        )}
 
         {/* Content Area */}
         <section className="flex-1 p-3 sm:p-4">

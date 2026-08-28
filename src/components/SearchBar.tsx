@@ -69,7 +69,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     if (!isRaceChosen) return 'Vui lòng chọn giải thi đấu ở Bước 1 trước...';
     switch (searchMode) {
       case 'SO_BIB':
-        return 'Nhập đúng 5 chữ số BIB (VD: 21999)...';
+        return 'Nhập đúng 5 chữ số BIB (VD: 80001)...';
       case 'HO_TEN':
         return 'Nhập họ tên VĐV (VD: NGUYỄN VĂN AN)...';
       case 'CCCD':
@@ -84,7 +84,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   const getStep2Title = () => {
     switch (searchMode) {
       case 'SO_BIB':
-        return 'BƯỚC 2: TÌM SỐ BIB (ĐỦ 5 SỐ • ĐÚNG 100%)';
+        return 'BƯỚC 2: TÌM SỐ BIB';
       case 'HO_TEN':
         return 'BƯỚC 2: TÌM THEO HỌ TÊN VĐV';
       case 'CCCD':
@@ -95,7 +95,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   return (
-    <div id="search-section" className="sticky top-0 z-20 p-3.5 sm:p-4 border-b border-[#1A1A1A] bg-[#1A1A1A] text-[#F4F1EA] shadow-md space-y-3">
+    <div id="search-section" className="p-3.5 sm:p-4 border-b border-[#1A1A1A] bg-[#1A1A1A] text-[#F4F1EA] shadow-md space-y-3">
       {/* 1. BƯỚC 1: Chọn Giải Thi Đấu */}
       <div>
         <div className="flex items-center justify-between text-[11px] font-mono-tech uppercase font-bold mb-1 tracking-wider">

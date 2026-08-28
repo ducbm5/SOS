@@ -419,15 +419,24 @@ export function searchRunners(
       continue;
     }
 
-    // 2. MODE: HO_TEN (Chỉ tìm họ tên hoặc tên trên BIB)
+    // 2. MODE: HO_TEN (Tìm đúng 100% họ tên hoặc tên trên BIB, không phân biệt hoa thường)
     if (searchMode === 'HO_TEN') {
-      const normHoTen = removeVietnameseTones(r.hoTen || '').toLowerCase();
-      const normTenBib = removeVietnameseTones(r.tenTrenBib || '').toLowerCase();
-      if (normHoTen && normHoTen.includes(normalizedQuery)) {
+      const cleanQuery = rawQuery.replace(/\s+/g, ' ');
+      const rawHoTen = (r.hoTen || '').trim().toLowerCase().replace(/\s+/g, ' ');
+      const rawTenBib = (r.tenTrenBib || '').trim().toLowerCase().replace(/\s+/g, ' ');
+
+      // Khớp 100% (không phân biệt chữ hoa / chữ thường)
+      if ((rawHoTen && rawHoTen === cleanQuery) || (rawTenBib && rawTenBib === cleanQuery)) {
         results.push(r);
         continue;
       }
-      if (normTenBib && normTenBib.includes(normalizedQuery)) {
+
+      // Khớp 100% khi người dùng gõ không dấu hoặc có dấu
+      const normQuery = normalizedQuery.replace(/\s+/g, ' ');
+      const normHoTen = removeVietnameseTones(r.hoTen || '').toLowerCase().replace(/\s+/g, ' ');
+      const normTenBib = removeVietnameseTones(r.tenTrenBib || '').toLowerCase().replace(/\s+/g, ' ');
+
+      if ((normHoTen && normHoTen === normQuery) || (normTenBib && normTenBib === normQuery)) {
         results.push(r);
         continue;
       }
